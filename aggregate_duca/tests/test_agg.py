@@ -1,6 +1,6 @@
 import unittest
 
-from agg import aggregate, split_music
+from agg import aggregate, split_music, leven_music
 
 class TestAggregate(unittest.TestCase):
     def test_aggregate(self):
@@ -20,9 +20,18 @@ class TestAggregate(unittest.TestCase):
         actual = aggregate(kyoku_list) 
         self.assertEqual(actual, {})
 
+
 class TestSplitMusic(unittest.TestCase):
     def test_split_music(self):
-        actual1, actual2, actual3 = split_music('test_data.txt')
+        actual1, actual2, actual3 = split_music('test_data1.txt')
         self.assertEqual(actual1, ['アマオト', 'アマオト', 'ラムネ'])
         self.assertEqual(actual2, ['Platonic syndrome', 'ロケット☆ライド', 'ロケット☆ライド'])
-        self.assertEqual(actual3, ['二人色', '観覧車', "Welcom☆Berry's"])
+        self.assertEqual(actual3, ['二人色', '観覧車', "Welcome☆Berry's"])
+
+
+class TestLevenMusic(unittest.TestCase):
+    def test_leven_music(self):
+        music_list1 = {'こいをしよーよ': 1, 'ロケット☆ライド': 1, 'ロケットライド': 1, "Wlcome Berry's" :1}
+        acutual = leven_music(music_list1)
+        self.assertEqual(acutual, {'恋をしよーよ': 1, 'ロケット☆ライド': 2, "Welcome☆Berry's": 1})
+
