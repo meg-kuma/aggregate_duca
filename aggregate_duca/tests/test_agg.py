@@ -1,3 +1,4 @@
+import tempfile
 import unittest
 
 from agg import aggregate, split_music, leven_music
@@ -23,10 +24,17 @@ class TestAggregate(unittest.TestCase):
 
 class TestSplitMusic(unittest.TestCase):
     def test_split_music(self):
-        actual1, actual2, actual3 = split_music('test_data1.txt')
-        self.assertEqual(actual1, ['アマオト', 'アマオト', 'ラムネ'])
-        self.assertEqual(actual2, ['Platonic syndrome', 'ロケット☆ライド', 'ロケット☆ライド'])
-        self.assertEqual(actual3, ['二人色', '観覧車', "Welcome☆Berry's"])
+        with tempfile.NamedTemporaryFile(mode='w') as f:
+            f.write("""アマオト,Platonic syndrome,二人色
+アマオト,ロケット☆ライド,観覧車
+ラムネ,ロケット☆ライド,Welcome☆Berry's
+""")
+            f.flush()
+            #actual1, actual2, actual3 = split_music('test_data1.txt')
+            actual1, actual2, actual3 = split_music(f.name)
+            self.assertEqual(actual1, ['アマオト', 'アマオト', 'ラムネ'])
+            self.assertEqual(actual2, ['Platonic syndrome', 'ロケット☆ライド', 'ロケット☆ライド'])
+            self.assertEqual(actual3, ['二人色', '観覧車', "Welcome☆Berry's"])
 
 
 class TestLevenMusic(unittest.TestCase):
