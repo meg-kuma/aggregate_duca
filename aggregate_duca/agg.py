@@ -33,12 +33,15 @@ def aggregate(name):
             count[val] = 1
     return count
 
-   # for k, v in count.items():
-   #     print(k + ': ' + str(v))
+
 
 def leven_music(agg_musics):
     """
     jaro_winklerによって曲を表記ゆれを吸収していく
+    観覧車の表記ゆれを吸収できなかったので、music_listsに
+    観覧車 ～あの日と、昨日と今日と明日と～
+    観覧車
+    をそれぞれいれておく。
     """
 
     """
@@ -68,7 +71,7 @@ def leven_music(agg_musics):
         'beloved story','優しい雨','キミと...','Hello,Future!','ナツコイ','あいのうた','Say to you',
         'Fate Line','キミのオト','eyes to eyes','キミへ贈るメロディー','End of the Line','Still',
         '君がいない明日','achromia','ネコイチ','Growing','内緒のホント','Blooming',
-        '観覧車 ～あの日と、昨日と今日と明日と～','candy♥girl','Dribing story',
+        '観覧車 ～あの日と、昨日と今日と明日と～','観覧車',candy♥girl','Dribing story',
         'ラムネ (12 Stories ver)','ラムネ -strings arrange-','星に想いを夜に願いを Ending arrange ver',
         '夢遥か Piano Arrange Ver','カラフル (ロックバージョン)','二人色 (Jump out mix)',
         'フルスロットルHeart (cobalt green Remix)','光の溢れるときには (arrange ver)',
@@ -78,7 +81,7 @@ def leven_music(agg_musics):
     ]
     """
 
-    music_lists = ['ロケット☆ライド', '恋をしよーよ', "Welcome☆Berry's"]
+    music_lists = ['ロケット☆ライド', '恋をしよーよ', "Welcome☆Berry's", '観覧車']
     result = {}
     for music_name, count in agg_musics.items():
         for music_list_name in music_lists:
@@ -93,12 +96,22 @@ def leven_music(agg_musics):
     return result
 
 
+def count_put_row(data, number):
+    """一時集計のデータをファイルに書き出す
+    """
+    with open('./output/count_row_data_' + str(number) + '.txt', 'w', encoding='utf-8') as f:
+        for name, value in data.items():
+            f.write(name + ':' + str(value) + '\n')
+
+    print(str(number) + '位書き込み完了')
+
 
 def main():
     """曲名集計スクリプト"""
     # 曲名をファイルから呼び出す
     argvs = sys.argv
     # 区切り文字","ごとに上位3曲をリストに分割する
+    #Todo: argvs[1]が無いときの例外処理を追加する
     duca_list1, duca_list2, duca_list3 = split_music(argvs[1])
 
     # 区切り文字ごとに1つずつ取り出して集計する
@@ -109,7 +122,11 @@ def main():
     count_duca1 = aggregate(duca_list1)
     count_duca2 = aggregate(duca_list2)
     count_duca3 = aggregate(duca_list3)
-    # 既存のDuca曲のリストと集計結果を紐付けて0.85より高いものを合計していく
+    # 暫定的に集計したものを一度ファイルに書き出す
+    count_put_row(count_duca1, 1)
+    count_put_row(count_duca2, 2)
+    count_put_row(count_duca3, 3)
+    # 既存のDuca曲のリストと集計結果を紐付けて0.84より高いものを合計していく
     leven_duca1 = leven_music(count_duca1)
     leven_duca2 = leven_music(count_duca2)
     leven_duca3 = leven_music(count_duca3)

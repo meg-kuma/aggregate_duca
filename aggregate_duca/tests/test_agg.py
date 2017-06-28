@@ -39,7 +39,21 @@ class TestSplitMusic(unittest.TestCase):
 
 class TestLevenMusic(unittest.TestCase):
     def test_leven_music(self):
-        music_list1 = {'こいをしよーよ': 1, 'ロケット☆ライド': 1, 'ロケットライド': 1, "Wlcome Berry's" :1}
+        music_list1 = {'こいをしよーよ': 1, 'ロケット☆ライド': 1, 'ロケットライド': 1, "Wlcome Berry's" :1, '観覧車': 1}
         acutual = leven_music(music_list1)
-        self.assertEqual(acutual, {'恋をしよーよ': 1, 'ロケット☆ライド': 2, "Welcome☆Berry's": 1})
+        self.assertEqual(acutual, {'恋をしよーよ': 1, 'ロケット☆ライド': 2, "Welcome☆Berry's": 1, '観覧車': 1})
 
+    def test_leven_music_keisan(self):
+        music_list1 = {'こいをしよーよ': 1, 'ロケット☆ライド': 3, 'ロケットライド': 1, "Wlcome Berry's": 1, '観覧車': 2}
+        acutual = leven_music(music_list1)
+        self.assertEqual(acutual, {'恋をしよーよ': 1, 'ロケット☆ライド': 4, "Welcome☆Berry's": 1, '観覧車': 2})
+
+    def test_leven_music_zero(self):
+        music_list1 = {'こいをしよーよ': 0, 'ロケット☆ライド': 0,  "Wlcome Berry's": 0, '観覧車': 0}
+        acutual = leven_music(music_list1)
+        self.assertEqual(acutual, {'恋をしよーよ': 0, 'ロケット☆ライド': 0, "Welcome☆Berry's": 0, '観覧車': 0})
+
+    def test_leven_music_list_none(self):
+        music_list1 = {'こいをしよーよ': 0, 'ロケット☆ライド': 0,  "Wlcome Berry's": 0, '観覧車': 0}
+        acutual = leven_music(music_list1)
+        self.assertEqual(acutual, {'恋をしよーよ': 0, 'ロケット☆ライド': 0, "Welcome☆Berry's": 0, '観覧車': 0})
